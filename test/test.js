@@ -1,11 +1,28 @@
 import {Bot} from "../index.js"
-
-const bot = new Bot("OTQwNzQ2MDI1MjUyMDYxMTk0.GcyRNl.vhl_vvUCIroqhG3yMtTE4-deJ9HBrHkgZtVK2Q");//Si , deja mando uno para testing
+import {settings} from "../settings.js"
+const bot = new Bot(settings.token);
 const Channel_ID = "940745683999268907";
+const Server_ID = "940745683999268904";
 (async() => {
-    const message = await bot.sendMessage(Channel_ID, {
-        content: "This is a test message, with reaction"
+    const message = await bot.Guild.sendMessage(Channel_ID, {
+        content: "Hello World",
+        embed: {
+            title: "Hello World",
+            description: "This is a test embed",
+            color: 0x00ff00
+        },
+        components: [{
+            "type": 1,
+            "components": [
+                {
+                    "type": 2,
+                    "label": "Click me!",
+                    "style": 1,
+                    "custom_id": "click_one"
+                }
+            ]
+        }]
     })
-    await bot.addReaction(Channel_ID, message.id, "👍")
-    await bot.addReaction(Channel_ID, message.id, "🙃")
-})()
+
+    console.log(message);
+})();
