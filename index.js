@@ -11,4 +11,3 @@ export class Bot{
         this.Guild = new Guild(this.#token);
     }
 }
-

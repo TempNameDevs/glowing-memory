@@ -1,11 +1,13 @@
 export class Fetch{
-    #base_url = "https://discord.com/api/v10/"
     #auth_header
     other_headers = {
         "Content-Type": "application/json",
         "Accept": "application/json"
     }
     constructor(token){
+        if(!token){
+            return this.error("Not token provided!")
+        }
         this.#auth_header = `Bot ${token}`;
     }
     error(err){
@@ -17,36 +19,36 @@ export class Fetch{
      * @param {RequestInit} configuration Request Configuration
      */
     get(endPoint, configuration, json = true){
-        return fetch(this.#base_url + endPoint,{
+        return fetch(endPoint,{
             headers: {
                 "Authorization": this.#auth_header
             },
-            ...this.other_headers
+            ...configuration
         })
 
         .then(data => json ? data.json() : data.text())
         .then(data => data)
-        .catch(err => this.error(err))
+        .catch(err => this.error)
     }
 
     post(endPoint, body, json = true){
-        return fetch(this.#base_url + endPoint,{
+        return fetch(endPoint,{
             headers: {
                 "Authorization": this.#auth_header,
                 ...this.other_headers
                 // Añade los valores a un arreglo o objeto
             },
             method: "POST",
-            body: JSON.stringify(body)
+            body: bodyJSON.stringify(body)
         })
 
         .then(data => json ? data.json() : data.text())
         .then(data => data)
-        .catch(err => this.error(err))
+        .catch(err => this.error)
     }
 
     put(endPoint, body, json = true){
-        return fetch(this.#base_url + endPoint, {
+        return fetch(endPoint, {
             headers: {
                 "Authorization": this.#auth_header,
                 ...this.other_headers
@@ -56,6 +58,6 @@ export class Fetch{
         })
         .then(data => json ? data.json() : data.text())
         .then(data => data)
-        .catch(this.error(err))
+        .catch(this.error)
     }
 }
